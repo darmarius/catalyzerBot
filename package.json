@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "pip install -r requirements.txt",
+        "build": "apt-get update || : && apt-get install python -y && pip install -r requirements.txt",
         "start": "python main.py"
     },
     "repository": {

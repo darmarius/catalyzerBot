@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "cat /etc/os-release && apt update || : && apt install python3 -y && pip install -r requirements.txt",
+        "build": "cat /etc/os-release && yum update || : && yum install python3 -y && pip install -r requirements.txt",
         "start": "python main.py"
     },
     "repository": {

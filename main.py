@@ -25,14 +25,24 @@ def handle_callback_query(call):
         message4.send(call)
     elif call.data == "fifth":
         message5.send(call)
-    elif  call.data== "done":
+    elif call.data == "done":
         message6.send(call)
-    elif  call.data== "self":
+    elif call.data == "self":
         message6.self(call)
-    elif  call.data.startswith("confirm"):
+    elif call.data.startswith("confirm"):
         message7.send(call)
-    elif  call.data.startswith("failed"):
+    elif call.data.startswith("failed"):
         message8.send(call)
+    elif call.data == "user_list":
+        messageAdmin.user_list()
+    elif call.data == "wait_list":
+        messageAdmin.wait_list()
+    elif call.data == "statistic":
+        messageAdmin.statistic()
+    elif call.data == "dump":
+        messageAdmin.dump()
+    elif  call.data.startswith("user_info"):
+        messageAdmin.user_info(call)
     else:
         bot.answer_callback_query(call.id, text="Unknown action")
     
@@ -40,6 +50,10 @@ def handle_callback_query(call):
 @bot.message_handler(func=lambda message: message.text.lower() == 'f')
 def send_users_list(message):
     messageAdmin.send(message)
+
+@bot.message_handler(func=lambda message: message.text.startswith('заливка:'))
+def import_users(message):
+    messageAdmin.import_users(message)
 
 # запускаем бота
 try:

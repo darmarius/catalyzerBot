@@ -1,5 +1,4 @@
 from bot import bot
-import db
 import threading
 import time
 

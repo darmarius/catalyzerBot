@@ -1,5 +1,6 @@
 from telebot import types
 from bot import bot
+from message6 import user_keyboard
 import db
 
 def send(message):
@@ -20,13 +21,13 @@ def send(message):
 def user_list():
     users = db.select_all_users()
     message = """Список всех пользователей к вашему вниманию:"""
-    keyboard = users_keyboard(users)
+    keyboard = users_list_keyboard(users)
     send_to_admin(message,keyboard)
 
 def wait_list():
     users = db.select_all_users(" WHERE stage in (6,7,8)")
     message = """Список ожидающих пользователей к вашему вниманию:"""
-    keyboard = users_keyboard(users)
+    keyboard = users_list_keyboard(users)
     send_to_admin(message,keyboard)
     
 def user_info(call):
@@ -40,7 +41,10 @@ Register Date: {user[0][5]}
 Stage: {user[0][6]}
 File Sent: {user[0][7]}"""
     print(user_info_message)
-    send_to_admin(user_info_message)
+    keyboard = None
+    if user[0][6] > 5:
+        keyboard = user_keyboard(user[0][3])
+    send_to_admin(user_info_message,keyboard)
 
 def statistic():
     users = db.get_statistic("users")
@@ -62,7 +66,7 @@ def send_to_admin(message,keyboard=None):
     admin_id = db.get_admin_user()[0][0]
     bot.send_message(admin_id, message, reply_markup=keyboard)
 
-def users_keyboard(users):
+def users_list_keyboard(users):
     keyboard = types.InlineKeyboardMarkup()
     for user in users:
         button = types.InlineKeyboardButton(text=f"{user[2]} - @{user[1]}", callback_data=f"user_info{user[3]}")

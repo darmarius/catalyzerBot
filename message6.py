@@ -27,10 +27,6 @@ def self(call):
     admin_message = "Он понимает вашу загрузку и готов написать вам самостоятельно. Какой молодец!"
     send_message_to_admin(chat_id,admin_message)
 
-
-
-
-
 def send_message_to_admin(chat_id,action):
     admin = db.get_admin_user()
     admin_id = admin[0][0]
@@ -44,9 +40,13 @@ def send_message_to_admin(chat_id,action):
     confirm_message = f"""Милостивый государь,
 У нас новый клиент @{username}!
 {action}."""
+    keyboard = user_keyboard(chat_id)
+    bot.send_message(admin_id, confirm_message, reply_markup=keyboard, parse_mode="Markdown")
+
+def user_keyboard(chat_id):
     keyboard = types.InlineKeyboardMarkup()
     button1 = types.InlineKeyboardButton(text="Ща напишу", callback_data=f"confirm{chat_id}")
     button2 = types.InlineKeyboardButton(text="Не могу написать", callback_data=f"failed{chat_id}")
     keyboard.add(button1)
     keyboard.add(button2)
-    bot.send_message(admin_id, confirm_message, reply_markup=keyboard, parse_mode="Markdown")
+    return keyboard
